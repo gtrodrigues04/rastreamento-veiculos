@@ -9,6 +9,12 @@ services:
     volumes:
       - ./backend:/home/node/app
   
+  nextjs:
+    build: ./frontend
+    ports:
+      - 3001:3000
+    volumes:
+      - ./frontend:/home/node/app
   db:
     image: bitnami/mongodb:5.0.17
     ports:
