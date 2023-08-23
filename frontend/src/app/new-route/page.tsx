@@ -17,6 +17,8 @@ export function NewRoutePage() {
         const source = document.querySelector<HTMLInputElement>("input[name=source_place]")?.value;
         const destination = document.querySelector<HTMLInputElement>("input[name=destination_place]")?.value;
 
+        // const source = (document.getElementById("source") as HTMLInputElement); Exemplo de maneira de setar variavel pelo input pelo id do elemento.
+
         const [sourceResponse, destinationResponse] = await Promise.all([
             fetch(`http://localhost:3000/places?text=${source}`),
             fetch(`http://localhost:3000/places?text=${destination}`),
@@ -63,14 +65,35 @@ export function NewRoutePage() {
             directionsResponseData
         });
     };
+
+    async function createRoute() {
+        const startAddress = directionsResponseData?.routes[0].legs[0].start_address;
+        const endAddress = directionsResponseData?.routes[0].legs[0].end_address;
+        
+        const origemPlaceId = directionsResponseData!.request.origin.place_id.replace("place_id:", "");
+        const destinoPlaceId = directionsResponseData!.request.destination.place_id.replace("place_id:", "");
+
+        const response = await fetch('http://localhost:3000/routes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: `${startAddress} - ${endAddress}`,
+                source_id: origemPlaceId,
+                destination_id: destinoPlaceId,
+            })
+        });
+        const route = await response.json();
+    }
     
     return (
         <div className ="flex flex-row h-full">
             <div>
                 <h1>Nova rota</h1>
                 <form className="flex flex-col" onSubmit={searchPlaces}>
-                    <input name="source_place" placeholder="Origem"/>
-                    <input name="destination_place" placeholder="Destino"/>
+                    <input id="source" name="source_place" placeholder="Origem"/>
+                    <input id="destination" name="destination_place" placeholder="Destino"/>
                     <button type="submit">Pesquisar</button>
                 </form>
                 {directionsResponseData && (
@@ -88,7 +111,7 @@ export function NewRoutePage() {
                             Duração: {directionsResponseData?.routes[0]!.legs[0]!.duration.text}
                         </li>
                         <li>
-                            <button className='bg-blue-400 p-2 text-white rounded'>
+                            <button onClick={createRoute} className='bg-blue-400 p-2 text-white rounded'>
                                 Adicionar rota
                             </button>
                         </li>

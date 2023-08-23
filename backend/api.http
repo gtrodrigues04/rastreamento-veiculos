@@ -5,9 +5,9 @@ POST http://localhost:3000/routes
 Content-Type: application/json
 
 {
-    "name": "rota test",
-    "source_id": "ChIJmx-wX0rCpgARjxH_rJ8d5do",
-    "destination_id": "ChIJMyzPysqQpgARlznSOl55NVs"
+    "name": "Varginha - State of Minas Gerais, Brazil - Lavras, State of Minas Gerais, 37200-000, Brazil",
+    "source_id": "ChIJCQyKfpKSypQR4CAwqYF4WmA",
+    "destination_id": "ChIJ-QOxOYD9nwAR87Fco_v84zk"
 }
 
 ###

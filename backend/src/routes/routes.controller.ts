@@ -21,8 +21,9 @@ export class RoutesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.routesService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const route = await this.routesService.findOne(id);
+    return new RouteSerializer(route);
   }
 
   @Patch(':id')
